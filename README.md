@@ -41,6 +41,7 @@ A .NET 9 event-driven microservices architecture demonstrating Domain-Driven Des
 - **Event Handlers** - React to events from other services
 - **Bounded Contexts** - Each service owns its domain
 
+```mermaid
 
 sequenceDiagram
     participant Client
@@ -78,3 +79,4 @@ sequenceDiagram
         RabbitMQ-->>BillingService: OrderCompletedEvent
         BillingService->>BillingService: Process Payment
     end
+```
