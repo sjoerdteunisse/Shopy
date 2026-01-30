@@ -40,3 +40,41 @@ A .NET 9 event-driven microservices architecture demonstrating Domain-Driven Des
 - **Integration Events** - Cross-service communication via RabbitMQ
 - **Event Handlers** - React to events from other services
 - **Bounded Contexts** - Each service owns its domain
+
+
+sequenceDiagram
+    participant Client
+    participant OrderService
+    participant OrderAggregate
+    participant RabbitMQ
+    participant BillingService
+    rect rgb(230, 245, 255)
+        Note over Client,OrderAggregate: 1. Create Order
+        Client->>OrderService: POST /api/orders
+        OrderService->>OrderAggregate: new Order(...)
+        OrderAggregate->>OrderAggregate: Status = Created
+        OrderAggregate-->>OrderService: OrderCreatedEvent
+        OrderService->>RabbitMQ: Publish(OrderCreatedEvent)
+        RabbitMQ-->>BillingService: OrderCreatedEvent
+        BillingService->>BillingService: Create Invoice
+    end
+    rect rgb(240, 255, 240)
+        Note over Client,BillingService: 2. Approve Order
+        Client->>OrderService: POST /api/orders/{id}/approve
+        OrderService->>OrderAggregate: Approve()
+        OrderAggregate->>OrderAggregate: Status = Approved
+        OrderAggregate-->>OrderService: OrderApprovedEvent
+        OrderService->>RabbitMQ: Publish(OrderApprovedEvent)
+        RabbitMQ-->>BillingService: OrderApprovedEvent
+        BillingService->>BillingService: Update Billing Account
+    end
+    rect rgb(255, 245, 230)
+        Note over Client,BillingService: 3. Complete Order
+        Client->>OrderService: POST /api/orders/{id}/complete
+        OrderService->>OrderAggregate: Complete()
+        OrderAggregate->>OrderAggregate: Status = Completed
+        OrderAggregate-->>OrderService: OrderCompletedEvent
+        OrderService->>RabbitMQ: Publish(OrderCompletedEvent)
+        RabbitMQ-->>BillingService: OrderCompletedEvent
+        BillingService->>BillingService: Process Payment
+    end
