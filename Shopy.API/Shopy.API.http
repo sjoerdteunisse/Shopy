@@ -1,0 +1,13 @@
+@API_HOST = http://localhost:5140
+
+### Create order (v1)
+POST {{API_HOST}}/api/v1/orders
+Content-Type: application/json
+Accept: application/json
+
+{
+  "customerId": "CUST-001",
+  "customerEmail": "customer@example.com",
+  "amount": 150.50
+}
+

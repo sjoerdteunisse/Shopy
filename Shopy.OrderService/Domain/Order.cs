@@ -48,8 +48,8 @@ public class Order
 
 public enum OrderStatus
 {
-    Created = 0,
-    Approved = 1,
-    Completed = 2,
-    Failed = 3
+    Created = 1,
+    Approved = 2,
+    Completed = 3,
+    Failed = 4
 }
