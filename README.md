@@ -22,17 +22,17 @@ A .NET 9 event-driven microservices architecture demonstrating Domain-Driven Des
 
 ## Domain-Driven Design (DDD)
 
-### Order Service
+### Order Service 
 
-Order (Aggregate Root)
-├─ Enforces business invariants (status transitions)
-├─ Raises domain events
-└─ Encapsulates business logic
+**Order (Aggregate Root)**
+- Enforces business invariants (status transitions: Created → Approved → Completed)
+- Raises domain events when state changes occur
+- Encapsulates business logic and validates operations
 
-OrderApplicationService (Application Layer)
-├─ Orchestrates domain operations
-├─ Publishes integration events
-└─ Coordinates cross-cutting concerns
+**OrderApplicationService (Application Layer)**
+- Orchestrates domain operations (create, approve, complete)
+- Publishes integration events to RabbitMQ
+- Coordinates cross-cutting concerns (logging, event publishing)
 
 ## Key Patterns
 - **Aggregate Pattern** - Order enforces invariants, raises events
